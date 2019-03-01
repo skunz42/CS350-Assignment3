@@ -1,4 +1,5 @@
-#include "driver.h"
+//#include "driver.h"
+#include "algorithm.h"
 
 int main(int argc, char **argv){
 	generator gen = generator();

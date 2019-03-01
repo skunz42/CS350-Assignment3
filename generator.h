@@ -11,9 +11,9 @@ class generator {
 		generator();
 		~generator();
 		// accessors to be all proper and stuff
-		int getNoLoc(int idx);
-		int getEighty20(int idx);
-		int getLoop(int idx);
+		int getNoLoc(int);
+		int getEighty20(int);
+		int getLoop(int);
 	private:
 		
 		
