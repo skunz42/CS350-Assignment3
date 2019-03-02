@@ -9,6 +9,7 @@ class algorithm {
 		algorithm();
 		algorithm(generator *);
 		~algorithm();
+		int fifo(int, int);
 	private:
 		int nolocality[TRACE_LEN];
 		int eightytwenty[TRACE_LEN];

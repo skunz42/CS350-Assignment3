@@ -2,8 +2,13 @@
 #include "algorithm.h"
 
 int main(int argc, char **argv){
-	generator gen = generator();
-	
+	generator *gen = new generator();
+
+	int workloadSize = 20;
+	int workloads[workloadSize];
+	int fifoNoLoc[workloadSize];
+	int fifoEightyTwenty[workloadSize];
+	int fifoLooping[workloadSize];
 	// cout the generated traces------------------------------------------------
 /*	
 	for(int i = 0; i < 55; i++){
@@ -34,6 +39,10 @@ int main(int argc, char **argv){
 	cout << coldCount << endl;
 */
 	// end test-----------------------------------------------------------------
-    return 0;
+	for (int i = 0; i < workloadSize; i++) {
+		workloads[i] = 5*(i+1);
+	}
+	delete(gen);
+    	return 0;
 
 }
