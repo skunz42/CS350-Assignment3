@@ -3,12 +3,14 @@
 
 int main(int argc, char **argv){
 	generator *gen = new generator();
+	algorithm *algo = new algorithm(gen);
 
 	int workloadSize = 20;
 	int workloads[workloadSize];
 	int fifoNoLoc[workloadSize];
 	int fifoEightyTwenty[workloadSize];
 	int fifoLooping[workloadSize];
+
 	// cout the generated traces------------------------------------------------
 /*	
 	for(int i = 0; i < 55; i++){
@@ -39,10 +41,19 @@ int main(int argc, char **argv){
 	cout << coldCount << endl;
 */
 	// end test-----------------------------------------------------------------
+	
+	//Set up workload array for table sizes
 	for (int i = 0; i < workloadSize; i++) {
 		workloads[i] = 5*(i+1);
 	}
-	delete(gen);
-    	return 0;
 
+	//Loop through workloads
+	for (int i = 0; i < workloadSize; i++) {
+		fifoNoLoc[i] = algo->fifo(workloads[i], 0);
+		fifoEightyTwenty[i] = algo->fifo(workloads[i], 1);
+		fifoLooping[i] = algo->fifo(workloads[i], 2);
+	}
+	delete(gen);
+	delete(algo);
+    	return 0;
 }
