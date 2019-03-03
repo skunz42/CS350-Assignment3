@@ -53,6 +53,23 @@ int main(int argc, char **argv){
 		fifoEightyTwenty[i] = algo->fifo(workloads[i], 1);
 		fifoLooping[i] = algo->fifo(workloads[i], 2);
 	}
+
+	//Testing - print out fifo workloads
+	cout << "FIFO No-Locality" << endl;
+	for (int i = 0; i < workloadSize; i++) {
+		cout << fifoNoLoc[i] << " ";
+	}
+	cout << endl;
+	cout << "FIFO 80-20" << endl;
+	for (int i = 0; i < workloadSize; i++) {
+		cout << fifoEightyTwenty[i] << " ";
+	}
+	cout << endl;
+	cout << "FIFO Looping" << endl;
+	for (int i = 0; i < workloadSize; i++) {
+		cout << fifoLooping[i] << " ";
+	}
+	cout << endl;
 	delete(gen);
 	delete(algo);
     	return 0;
