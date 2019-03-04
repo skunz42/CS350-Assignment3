@@ -90,3 +90,146 @@ int algorithm::random(int tableSize, int workload) {
 	}
 	return hitCount;
 }
+
+int algorithm::optimal(int tableSize, int workload){
+	int workArr[algorithm::TRACE_LEN];
+	int hitCount = 0;
+	//int tableIndex = 0;
+	int table[tableSize] = {-1}; 
+	bool inTable;
+	bool placed;
+	int furthestOut[tableSize] = {-1};
+	int furthestIdx;
+	int tmp;
+
+	if (workload == 0) { //No locality
+		copy(begin(nolocality), end(nolocality), begin(workArr));
+	} else if (workload == 1) { //eighty twenty
+		copy(begin(eightytwenty), end(eightytwenty), begin(workArr));
+	} else { //looping
+		copy(begin(looping), end(looping), begin(workArr));
+	}
+
+	for (int i = 0; i < algorithm::TRACE_LEN; i++) {
+		int pageNum = workArr[i];
+		inTable = false;
+		for (int j = 0; j < tableSize; j++) {
+			if (table[j] == pageNum) { //page number is in table
+				inTable = true;
+				hitCount++;
+				break;
+			}
+		}
+		if (!inTable) { 
+			placed = false;			
+			for (int k = 0; k < tableSize; k++){ // first look for empty table
+				if (table[k] == -1){			// entries to account for 
+					placed = true;				// compulsory misses
+					table[k] = pageNum;	
+					break;
+				}							
+			}
+			if(!placed){ // if the page has not been placed, the cache is full:
+				int m;			// evict page used furthest in the future
+				for (m = 0; m < tableSize; m++){
+					furthestOut[m] = -1; // if you dont understand this reset to 
+				} 							// -1 just ask and i'll explain
+				for (m = 0; m < tableSize; m++){
+					for(furthestIdx = (i+1); furthestIdx < algorithm::TRACE_LEN; 
+					furthestIdx++){ // starting at the next idx in the trace
+						if(table[m] == workArr[furthestIdx]){ // track the first
+							furthestOut[m] = furthestIdx; // occurence of each
+							break; // page that is currently in the table
+						}			
+					}			
+				}					
+				furthestIdx = -1;
+				tmp = -1;
+				for(m = 0; m < tableSize; m++){ // then place the new page at the 
+					if(furthestOut[m] > tmp){ // table idx associated with the 
+						tmp = furthestOut[m]; // largest next occurence idx
+						furthestIdx = m;
+					}
+				}
+				table[furthestIdx] = pageNum;
+			}
+		}
+	}
+	return hitCount;
+}
+			
+
+int algorithm::clock(int tableSize, int workload){
+	int workArr[algorithm::TRACE_LEN];
+	int hitCount = 0;
+	//int tableIndex = 0;
+	int table[tableSize] = {-1};
+	bool inTable; 
+	bool placed;
+	int clockHand = 0;
+	int useBit[tableSize] = {-1};
+
+	if (workload == 0) { //No locality
+		copy(begin(nolocality), end(nolocality), begin(workArr));
+	} else if (workload == 1) { //eighty twenty
+		copy(begin(eightytwenty), end(eightytwenty), begin(workArr));
+	} else { //looping
+		copy(begin(looping), end(looping), begin(workArr));
+	}
+	for (int i = 0; i < algorithm::TRACE_LEN; i++) {
+		int pageNum = workArr[i];
+		inTable = false;
+		for (int j = 0; j < tableSize; j++) {
+			if (table[j] == pageNum) { //page number is in table
+				inTable = true;
+				hitCount++;
+				useBit[j] = 1;
+				break;
+			}
+		}
+		if (!inTable) { 
+			placed = false;			
+			for (int k = 0; k < tableSize; k++){ // first look for empty table
+				if (table[k] == -1){			// entries to account for 
+					placed = true;				// compulsory misses
+					table[k] = pageNum;	
+					useBit[k] = 1;
+					break;
+				}							
+			}
+			while(!placed){  // cache is full cycle through and evict appropriately 
+				if(useBit[clockHand] == 0){
+					table[clockHand] = pageNum;
+					useBit[clockHand] = 1;
+					placed = true;
+				}
+				else{
+					useBit[clockHand] = 0;						
+					clockHand = (clockHand+1) % tableSize;
+				}
+			}
+		}
+	}
+	return hitCount;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+								
+
