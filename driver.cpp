@@ -10,6 +10,9 @@ int main(int argc, char **argv){
 	int fifoNoLoc[workloadSize];
 	int fifoEightyTwenty[workloadSize];
 	int fifoLooping[workloadSize];
+	int randNoLoc[workloadSize];
+	int randEightyTwenty[workloadSize];
+	int randLooping[workloadSize];
 
 	// cout the generated traces------------------------------------------------
 /*	
@@ -52,6 +55,9 @@ int main(int argc, char **argv){
 		fifoNoLoc[i] = algo->fifo(workloads[i], 0);
 		fifoEightyTwenty[i] = algo->fifo(workloads[i], 1);
 		fifoLooping[i] = algo->fifo(workloads[i], 2);
+		randNoLoc[i] = algo->random(workloads[i], 0);
+		randEightyTwenty[i] = algo->random(workloads[i], 1);
+		randLooping[i] = algo->random(workloads[i], 2);
 	}
 
 	//Testing - print out fifo workloads
@@ -68,6 +74,23 @@ int main(int argc, char **argv){
 	cout << "FIFO Looping" << endl;
 	for (int i = 0; i < workloadSize; i++) {
 		cout << fifoLooping[i] << " ";
+	}
+	cout << endl;
+
+	//Testing - print out random workloads
+	cout << "RANDOM No-Locality" << endl;
+	for (int i = 0; i < workloadSize; i++) {
+		cout << randNoLoc[i] << " ";
+	}
+	cout << endl;
+	cout << "RANDOM 80-20" << endl;
+	for (int i = 0; i < workloadSize; i++) {
+		cout << randEightyTwenty[i] << " ";
+	}
+	cout << endl;
+	cout << "RANDOM Looping" << endl;
+	for (int i = 0; i < workloadSize; i++) {
+		cout << randLooping[i] << " ";
 	}
 	cout << endl;
 	delete(gen);

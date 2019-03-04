@@ -10,6 +10,7 @@ class algorithm {
 		algorithm(generator *);
 		~algorithm();
 		int fifo(int, int);
+		int random(int, int);
 	private:
 		int nolocality[TRACE_LEN];
 		int eightytwenty[TRACE_LEN];
