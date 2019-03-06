@@ -91,6 +91,52 @@ int algorithm::random(int tableSize, int workload) {
 	return hitCount;
 }
 
+int algorithm::lru(int tableSize, int workload) {
+	int workArr[algorithm::TRACE_LEN];
+	int hitCount = 0;
+	//int tablieIndex = 0;
+	int table[tableSize] = {-1}; //set all values to -1 so we know which spots are empty
+	int lruTable[tableSize] = {-1}; //table for timestamps of pages in page table
+	int lru; //value of lru page
+	int lruIndex; //index in pt of lru value
+	bool inTable; //check if value from trace is in the page table
+
+	//workload parameter chooses which array to use. copy contents of the
+	//selected array to a working array so we don't repeat code
+	if (workload == 0) { //No locality
+		copy(begin(nolocality), end(nolocality), begin(workArr));
+	} else if (workload == 1) { //eighty twenty
+		copy(begin(eightytwenty), end(eightytwenty), begin(workArr));
+	} else { //looping
+		copy(begin(looping), end(looping), begin(workArr));
+	}
+	for (int i = 0; i < algorithm::TRACE_LEN; i++) {
+		int pageNum = workArr[i];
+		inTable = false;
+		lru = INT_MAX;
+		for (int j = 0; j < tableSize; j++) {
+			if (table[j] == pageNum) { //page number is in table
+				inTable = true;
+				lruTable[j] = i; //update timestamp
+				hitCount++;
+				break;
+			}
+		}
+		if (!inTable) { //evict lru page number
+			//tableIndex = rand()%tableSize;
+			for (int j = 0; j < tableSize; j++) {
+				if (lruTable[j] < lru) { //older timestamp
+					lru = lruTable[j];
+					lruIndex = j;
+				}
+			}
+			table[lruIndex] = pageNum;
+			lruTable[lruIndex] = i;
+		}
+	}
+	return hitCount;
+}
+
 int algorithm::optimal(int tableSize, int workload){
 	int workArr[algorithm::TRACE_LEN];
 	int hitCount = 0;

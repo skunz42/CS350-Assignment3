@@ -1,5 +1,6 @@
 #include <iostream>
 #include <stdlib.h>
+#include <limits.h>
 
 #include "generator.h"
 
@@ -11,6 +12,7 @@ class algorithm {
 		~algorithm();
 		int fifo(int, int);
 		int random(int, int);
+		int lru(int, int);
 		int optimal(int, int);
 		int clock(int, int);
 	private:

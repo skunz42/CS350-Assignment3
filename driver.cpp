@@ -19,6 +19,9 @@ int main(int argc, char **argv){
 	int clockNoLoc[workloadSize];
 	int clockEightyTwenty[workloadSize];
 	int clockLooping[workloadSize];
+	int lruNoLoc[workloadSize];
+	int lruEightyTwenty[workloadSize];
+	int lruLooping[workloadSize];
 
 	// cout the generated traces------------------------------------------------
 /*	
