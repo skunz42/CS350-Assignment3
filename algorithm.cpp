@@ -259,6 +259,40 @@ int algorithm::clock(int tableSize, int workload){
 	return hitCount;
 }
 
+void algorithm::writeCSV(int **optArr, int **lruArr, int **fifoArr, int **randArr, int **clockArr) {
+	int workloadSize = 20;
+	ofstream myfile;
+	ofstream myfile2;
+	ofstream myfile3;
+
+	//No-Locality
+	myfile.open("no_locality_data.csv");
+	myfile << "#cache, OPT, LRU, FIFO, RAND, CLOCK\n";
+	myfile << "0, 0, 0, 0, 0, 0\n";
+	for (int i = 0; i < workloadSize; i++) {
+		myfile << 5*(i+1) << "," << 100.0*(optArr[0][i])/algorithm::TRACE_LEN << "," << 100.0*lruArr[0][i]/algorithm::TRACE_LEN << "," << 100.0*fifoArr[0][i]/algorithm::TRACE_LEN << "," << 100.0*randArr[0][i]/algorithm::TRACE_LEN << "," << 100.0*clockArr[0][i]/algorithm::TRACE_LEN << "\n";
+	}
+	myfile.close();
+
+	//80-20
+	myfile2.open("eighty_twenty_data.csv");
+	myfile2 << "#cache, OPT, LRU, FIFO, RAND, CLOCK\n";
+	myfile2 << "0, 0, 0, 0, 0, 0\n";
+	for (int i = 0; i < workloadSize; i++) {
+		myfile2 << 5*(i+1) << "," << 100.0*(optArr[1][i])/algorithm::TRACE_LEN << "," << 100.0*lruArr[1][i]/algorithm::TRACE_LEN << "," << 100.0*fifoArr[1][i]/algorithm::TRACE_LEN << "," << 100.0*randArr[1][i]/algorithm::TRACE_LEN << "," << 100.0*clockArr[1][i]/algorithm::TRACE_LEN << "\n";
+	}
+	myfile2.close();
+
+	//Looping
+	myfile3.open("looping_data.csv");
+	myfile3 << "#cache, OPT, LRU, FIFO, RAND, CLOCK\n";
+	myfile3 << "0, 0, 0, 0, 0, 0\n";
+	for (int i = 0; i < workloadSize; i++) {
+		myfile3 << 5*(i+1) << "," << 100.0*(optArr[2][i])/algorithm::TRACE_LEN << "," << 100.0*lruArr[2][i]/algorithm::TRACE_LEN << "," << 100.0*fifoArr[2][i]/algorithm::TRACE_LEN << "," << 100.0*randArr[2][i]/algorithm::TRACE_LEN << "," << 100.0*clockArr[2][i]/algorithm::TRACE_LEN << "\n";
+	}
+	myfile3.close();
+}
+
 
 
 

@@ -15,8 +15,6 @@ class generator {
 		int getEighty20(int);
 		int getLoop(int);
 	private:
-		
-		
 		// workload types --
 		// can be static arrays because they are all
 		// invariably of len 10,000
@@ -29,5 +27,4 @@ class generator {
 		void makeNoLoc();
 		void makeEighty20();
 		void makeLoop();
-
 };

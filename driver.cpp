@@ -22,6 +22,12 @@ int main(int argc, char **argv){
 	int lruNoLoc[workloadSize];
 	int lruEightyTwenty[workloadSize];
 	int lruLooping[workloadSize];
+
+	int *fifoArr[3] = {fifoNoLoc, fifoEightyTwenty, fifoLooping};
+	int *randArr[3] = {randNoLoc, randEightyTwenty, randLooping};
+	int *optArr[3] = {optNoLoc, optEightyTwenty, optLooping};
+	int *clockArr[3] = {clockNoLoc, clockEightyTwenty, clockLooping};
+	int *lruArr[3] = {lruNoLoc, lruEightyTwenty, lruLooping};
 	
 	//Set up workload array for table sizes
 	for (int i = 0; i < workloadSize; i++) {
@@ -33,6 +39,7 @@ int main(int argc, char **argv){
 		fifoNoLoc[i] = algo->fifo(workloads[i], 0);
 		fifoEightyTwenty[i] = algo->fifo(workloads[i], 1);
 		fifoLooping[i] = algo->fifo(workloads[i], 2);
+
 		randNoLoc[i] = algo->random(workloads[i], 0);
 		randEightyTwenty[i] = algo->random(workloads[i], 1);
 		randLooping[i] = algo->random(workloads[i], 2);
@@ -50,90 +57,8 @@ int main(int argc, char **argv){
 		lruLooping[i] = algo->lru(workloads[i], 2);
 	}
 
-	//Testing - print out fifo workloads
-	cout << "FIFO No-Locality" << endl;
-	for (int i = 0; i < workloadSize; i++) {
-		cout << fifoNoLoc[i] << " ";
-	}
-	cout << endl;
-	cout << "FIFO 80-20" << endl;
-	for (int i = 0; i < workloadSize; i++) {
-		cout << fifoEightyTwenty[i] << " ";
-	}
-	cout << endl;
-	cout << "FIFO Looping" << endl;
-	for (int i = 0; i < workloadSize; i++) {
-		cout << fifoLooping[i] << " ";
-	}
-	cout << endl;
+	algo->writeCSV(optArr, lruArr, fifoArr, randArr, clockArr);
 
-	//Testing - print out random workloads
-	cout << "RANDOM No-Locality" << endl;
-	for (int i = 0; i < workloadSize; i++) {
-		cout << randNoLoc[i] << " ";
-	}
-	cout << endl;
-	cout << "RANDOM 80-20" << endl;
-	for (int i = 0; i < workloadSize; i++) {
-		cout << randEightyTwenty[i] << " ";
-	}
-	cout << endl;
-	cout << "RANDOM Looping" << endl;
-	for (int i = 0; i < workloadSize; i++) {
-		cout << randLooping[i] << " ";
-	}
-	cout << endl;
-
-	//Testing - print out optimal workloads
-	cout << "OPTIMAL No-Locality" << endl;
-	for (int i = 0; i < workloadSize; i++) {
-		cout << optNoLoc[i] << " ";
-	}
-	cout << endl;
-	cout << "OPTIMAL 80-20" << endl;
-	for (int i = 0; i < workloadSize; i++) {
-		cout << optEightyTwenty[i] << " ";
-	}
-	cout << endl;
-	cout << "OPTIMAL Looping" << endl;
-	for (int i = 0; i < workloadSize; i++) {
-		cout << optLooping[i] << " ";
-	}
-	cout << endl;
-
-	//Testing - print out clock workloads
-	cout << "CLOCK No-Locality" << endl;
-	for (int i = 0; i < workloadSize; i++) {
-		cout << clockNoLoc[i] << " ";
-	}
-	cout << endl;
-	cout << "CLOCK 80-20" << endl;
-	for (int i = 0; i < workloadSize; i++) {
-		cout << clockEightyTwenty[i] << " ";
-	}
-	cout << endl;
-	cout << "CLOCK Looping" << endl;
-	for (int i = 0; i < workloadSize; i++) {
-		cout << clockLooping[i] << " ";
-	}
-	cout << endl;
-
-	//Testing - print out lru workloads
-	cout << "LRU No-Locality" << endl;
-	for (int i = 0; i < workloadSize; i++) {
-		cout << lruNoLoc[i] << " ";
-	}
-	cout << endl;
-	cout << "LRU 80-20" << endl;
-	for (int i = 0; i < workloadSize; i++) {
-		cout << lruEightyTwenty[i] << " ";
-	}
-	cout << endl;
-	cout << "LRU Looping" << endl;
-	for (int i = 0; i < workloadSize; i++) {
-		cout << lruLooping[i] << " ";
-	}
-	cout << endl;
 	delete(gen);
 	delete(algo);
     	return 0;
