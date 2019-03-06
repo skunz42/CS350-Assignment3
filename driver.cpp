@@ -22,37 +22,6 @@ int main(int argc, char **argv){
 	int lruNoLoc[workloadSize];
 	int lruEightyTwenty[workloadSize];
 	int lruLooping[workloadSize];
-
-	// cout the generated traces------------------------------------------------
-/*	
-	for(int i = 0; i < 55; i++){
-		//cout << gen.getNoLoc(i) << endl;
-		//cout << gen.getEighty20(i) << endl;
-		//cout << gen.getLoop(i) << endl;
-	}
-*/   
-	// end cout ----------------------------------------------------------------
-	// test to see if 80/20 is statistically correct ---------------------------
-/*    
-	int val;
-	int hotCount = 0;
-	int coldCount = 0;
-	for(int i = 0; i < generator::TRACE_LEN; i++){
-		val = gen.getEighty20(i);
-		if(val < 20){
-			hotCount++;
-		}
-		else{
-			coldCount++;
-		}
-	}
-	// if hotCount is roughly 2000
-	// and coldCount is roughly 8000 then 
-	// 80/20 trace is generated correctly
-	cout << hotCount << endl;
-	cout << coldCount << endl;
-*/
-	// end test-----------------------------------------------------------------
 	
 	//Set up workload array for table sizes
 	for (int i = 0; i < workloadSize; i++) {
@@ -75,6 +44,10 @@ int main(int argc, char **argv){
 		clockNoLoc[i] = algo->clock(workloads[i], 0);
 		clockEightyTwenty[i] = algo->clock(workloads[i], 1);
 		clockLooping[i] = algo->clock(workloads[i], 2);
+
+		lruNoLoc[i] = algo->lru(workloads[i], 0);
+		lruEightyTwenty[i] = algo->lru(workloads[i], 1);
+		lruLooping[i] = algo->lru(workloads[i], 2);
 	}
 
 	//Testing - print out fifo workloads
@@ -142,6 +115,23 @@ int main(int argc, char **argv){
 	cout << "CLOCK Looping" << endl;
 	for (int i = 0; i < workloadSize; i++) {
 		cout << clockLooping[i] << " ";
+	}
+	cout << endl;
+
+	//Testing - print out lru workloads
+	cout << "LRU No-Locality" << endl;
+	for (int i = 0; i < workloadSize; i++) {
+		cout << lruNoLoc[i] << " ";
+	}
+	cout << endl;
+	cout << "LRU 80-20" << endl;
+	for (int i = 0; i < workloadSize; i++) {
+		cout << lruEightyTwenty[i] << " ";
+	}
+	cout << endl;
+	cout << "LRU Looping" << endl;
+	for (int i = 0; i < workloadSize; i++) {
+		cout << lruLooping[i] << " ";
 	}
 	cout << endl;
 	delete(gen);
