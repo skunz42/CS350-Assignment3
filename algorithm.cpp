@@ -153,13 +153,18 @@ int algorithm::optimal(int tableSize, int workload){
 	int workArr[algorithm::TRACE_LEN];
 	int hitCount = 0;
 	//int tableIndex = 0;
-	int table[tableSize] = {-1}; 
+	int table[tableSize]; // = {-1}; 
 	bool inTable;
 	bool placed;
-	int furthestOut[tableSize] = {algorithm::TRACE_LEN};
+	int furthestOut[tableSize]; // = {algorithm::TRACE_LEN};
 	int furthestIdx;
 	int tmp;
 
+	for(int i = 0; i < tableSize; i++){
+		table[i] = -1;
+		furthestOut[i] = algorithm::TRACE_LEN;
+	}
+	
 	if (workload == 0) { //No locality
 		copy(begin(nolocality), end(nolocality), begin(workArr));
 	} else if (workload == 1) { //eighty twenty
@@ -170,6 +175,7 @@ int algorithm::optimal(int tableSize, int workload){
 
 	for (int i = 0; i < algorithm::TRACE_LEN; i++) {
 		int pageNum = workArr[i];
+		//cout << pageNum << endl;
 		inTable = false;
 		for (int j = 0; j < tableSize; j++) {
 			if (table[j] == pageNum) { //page number is in table
@@ -190,7 +196,7 @@ int algorithm::optimal(int tableSize, int workload){
 			if(!placed){ // if the page has not been placed, the cache is full:
 				int m;			// evict page used furthest in the future
 				for (m = 0; m < tableSize; m++){
-					furthestOut[m] = algorithm::TRACE_LEN; // if you dont understand this reset to 
+					furthestOut[m] = (algorithm::TRACE_LEN); // if you dont understand this reset to 
 				} 							// traceLen just ask and i'll explain
 				for (m = 0; m < tableSize; m++){
 					for(furthestIdx = (i+1); furthestIdx < algorithm::TRACE_LEN; 
@@ -213,6 +219,7 @@ int algorithm::optimal(int tableSize, int workload){
 			}
 		}
 	}
+	//cout << tableSize << "\t" << hitCount << endl;
 	return hitCount;
 }
 			
@@ -221,11 +228,16 @@ int algorithm::clock(int tableSize, int workload){
 	int workArr[algorithm::TRACE_LEN];
 	int hitCount = 0;
 	//int tableIndex = 0;
-	int table[tableSize] = {-1};
+	int table[tableSize]; // = {-1};
 	bool inTable; 
 	bool placed;
 	int clockHand = 0;
-	int useBit[tableSize] = {-1};
+	int useBit[tableSize]; //= {-1};
+
+	for(int i = 0; i < tableSize; i++){
+		table[i] = -1;
+		useBit[i] = -1;;
+	}
 
 	if (workload == 0) { //No locality
 		copy(begin(nolocality), end(nolocality), begin(workArr));
