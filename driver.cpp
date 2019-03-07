@@ -19,37 +19,15 @@ int main(int argc, char **argv){
 	int clockNoLoc[workloadSize];
 	int clockEightyTwenty[workloadSize];
 	int clockLooping[workloadSize];
+	int lruNoLoc[workloadSize];
+	int lruEightyTwenty[workloadSize];
+	int lruLooping[workloadSize];
 
-	// cout the generated traces------------------------------------------------
-/*	
-	for(int i = 0; i < 55; i++){
-		//cout << gen.getNoLoc(i) << endl;
-		//cout << gen.getEighty20(i) << endl;
-		//cout << gen.getLoop(i) << endl;
-	}
-*/   
-	// end cout ----------------------------------------------------------------
-	// test to see if 80/20 is statistically correct ---------------------------
-/*    
-	int val;
-	int hotCount = 0;
-	int coldCount = 0;
-	for(int i = 0; i < generator::TRACE_LEN; i++){
-		val = gen.getEighty20(i);
-		if(val < 20){
-			hotCount++;
-		}
-		else{
-			coldCount++;
-		}
-	}
-	// if hotCount is roughly 2000
-	// and coldCount is roughly 8000 then 
-	// 80/20 trace is generated correctly
-	cout << hotCount << endl;
-	cout << coldCount << endl;
-*/
-	// end test-----------------------------------------------------------------
+	int *fifoArr[3] = {fifoNoLoc, fifoEightyTwenty, fifoLooping};
+	int *randArr[3] = {randNoLoc, randEightyTwenty, randLooping};
+	int *optArr[3] = {optNoLoc, optEightyTwenty, optLooping};
+	int *clockArr[3] = {clockNoLoc, clockEightyTwenty, clockLooping};
+	int *lruArr[3] = {lruNoLoc, lruEightyTwenty, lruLooping};
 	
 	//Set up workload array for table sizes
 	for (int i = 0; i < workloadSize; i++) {
@@ -61,6 +39,7 @@ int main(int argc, char **argv){
 		fifoNoLoc[i] = algo->fifo(workloads[i], 0);
 		fifoEightyTwenty[i] = algo->fifo(workloads[i], 1);
 		fifoLooping[i] = algo->fifo(workloads[i], 2);
+
 		randNoLoc[i] = algo->random(workloads[i], 0);
 		randEightyTwenty[i] = algo->random(workloads[i], 1);
 		randLooping[i] = algo->random(workloads[i], 2);
@@ -72,75 +51,14 @@ int main(int argc, char **argv){
 		clockNoLoc[i] = algo->clock(workloads[i], 0);
 		clockEightyTwenty[i] = algo->clock(workloads[i], 1);
 		clockLooping[i] = algo->clock(workloads[i], 2);
+
+		lruNoLoc[i] = algo->lru(workloads[i], 0);
+		lruEightyTwenty[i] = algo->lru(workloads[i], 1);
+		lruLooping[i] = algo->lru(workloads[i], 2);
 	}
 
-	//Testing - print out fifo workloads
-	cout << "FIFO No-Locality" << endl;
-	for (int i = 0; i < workloadSize; i++) {
-		cout << fifoNoLoc[i] << " ";
-	}
-	cout << endl;
-	cout << "FIFO 80-20" << endl;
-	for (int i = 0; i < workloadSize; i++) {
-		cout << fifoEightyTwenty[i] << " ";
-	}
-	cout << endl;
-	cout << "FIFO Looping" << endl;
-	for (int i = 0; i < workloadSize; i++) {
-		cout << fifoLooping[i] << " ";
-	}
-	cout << endl;
+	algo->writeCSV(optArr, lruArr, fifoArr, randArr, clockArr);
 
-	//Testing - print out random workloads
-	cout << "RANDOM No-Locality" << endl;
-	for (int i = 0; i < workloadSize; i++) {
-		cout << randNoLoc[i] << " ";
-	}
-	cout << endl;
-	cout << "RANDOM 80-20" << endl;
-	for (int i = 0; i < workloadSize; i++) {
-		cout << randEightyTwenty[i] << " ";
-	}
-	cout << endl;
-	cout << "RANDOM Looping" << endl;
-	for (int i = 0; i < workloadSize; i++) {
-		cout << randLooping[i] << " ";
-	}
-	cout << endl;
-
-	//Testing - print out optimal workloads
-	cout << "OPTIMAL No-Locality" << endl;
-	for (int i = 0; i < workloadSize; i++) {
-		cout << optNoLoc[i] << " ";
-	}
-	cout << endl;
-	cout << "OPTIMAL 80-20" << endl;
-	for (int i = 0; i < workloadSize; i++) {
-		cout << optEightyTwenty[i] << " ";
-	}
-	cout << endl;
-	cout << "OPTIMAL Looping" << endl;
-	for (int i = 0; i < workloadSize; i++) {
-		cout << optLooping[i] << " ";
-	}
-	cout << endl;
-
-	//Testing - print out clock workloads
-	cout << "CLOCK No-Locality" << endl;
-	for (int i = 0; i < workloadSize; i++) {
-		cout << clockNoLoc[i] << " ";
-	}
-	cout << endl;
-	cout << "CLOCK 80-20" << endl;
-	for (int i = 0; i < workloadSize; i++) {
-		cout << clockEightyTwenty[i] << " ";
-	}
-	cout << endl;
-	cout << "CLOCK Looping" << endl;
-	for (int i = 0; i < workloadSize; i++) {
-		cout << clockLooping[i] << " ";
-	}
-	cout << endl;
 	delete(gen);
 	delete(algo);
     	return 0;

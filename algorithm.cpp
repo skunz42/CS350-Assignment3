@@ -91,6 +91,52 @@ int algorithm::random(int tableSize, int workload) {
 	return hitCount;
 }
 
+int algorithm::lru(int tableSize, int workload) {
+	int workArr[algorithm::TRACE_LEN];
+	int hitCount = 0;
+	//int tablieIndex = 0;
+	int table[tableSize] = {-1}; //set all values to -1 so we know which spots are empty
+	int lruTable[tableSize] = {-1}; //table for timestamps of pages in page table
+	int lru; //value of lru page
+	int lruIndex; //index in pt of lru value
+	bool inTable; //check if value from trace is in the page table
+
+	//workload parameter chooses which array to use. copy contents of the
+	//selected array to a working array so we don't repeat code
+	if (workload == 0) { //No locality
+		copy(begin(nolocality), end(nolocality), begin(workArr));
+	} else if (workload == 1) { //eighty twenty
+		copy(begin(eightytwenty), end(eightytwenty), begin(workArr));
+	} else { //looping
+		copy(begin(looping), end(looping), begin(workArr));
+	}
+	for (int i = 0; i < algorithm::TRACE_LEN; i++) {
+		int pageNum = workArr[i];
+		inTable = false;
+		lru = INT_MAX;
+		for (int j = 0; j < tableSize; j++) {
+			if (table[j] == pageNum) { //page number is in table
+				inTable = true;
+				lruTable[j] = i; //update timestamp
+				hitCount++;
+				break;
+			}
+		}
+		if (!inTable) { //evict lru page number
+			//tableIndex = rand()%tableSize;
+			for (int j = 0; j < tableSize; j++) {
+				if (lruTable[j] < lru) { //older timestamp
+					lru = lruTable[j];
+					lruIndex = j;
+				}
+			}
+			table[lruIndex] = pageNum;
+			lruTable[lruIndex] = i;
+		}
+	}
+	return hitCount;
+}
+
 int algorithm::optimal(int tableSize, int workload){
 	int workArr[algorithm::TRACE_LEN];
 	int hitCount = 0;
@@ -211,6 +257,40 @@ int algorithm::clock(int tableSize, int workload){
 		}
 	}
 	return hitCount;
+}
+
+void algorithm::writeCSV(int **optArr, int **lruArr, int **fifoArr, int **randArr, int **clockArr) {
+	int workloadSize = 20;
+	ofstream myfile;
+	ofstream myfile2;
+	ofstream myfile3;
+
+	//No-Locality
+	myfile.open("no_locality_data.csv");
+	myfile << "#cache, OPT, LRU, FIFO, RAND, CLOCK\n";
+	myfile << "0, 0, 0, 0, 0, 0\n";
+	for (int i = 0; i < workloadSize; i++) {
+		myfile << 5*(i+1) << "," << 100.0*(optArr[0][i])/algorithm::TRACE_LEN << "," << 100.0*lruArr[0][i]/algorithm::TRACE_LEN << "," << 100.0*fifoArr[0][i]/algorithm::TRACE_LEN << "," << 100.0*randArr[0][i]/algorithm::TRACE_LEN << "," << 100.0*clockArr[0][i]/algorithm::TRACE_LEN << "\n";
+	}
+	myfile.close();
+
+	//80-20
+	myfile2.open("eighty_twenty_data.csv");
+	myfile2 << "#cache, OPT, LRU, FIFO, RAND, CLOCK\n";
+	myfile2 << "0, 0, 0, 0, 0, 0\n";
+	for (int i = 0; i < workloadSize; i++) {
+		myfile2 << 5*(i+1) << "," << 100.0*(optArr[1][i])/algorithm::TRACE_LEN << "," << 100.0*lruArr[1][i]/algorithm::TRACE_LEN << "," << 100.0*fifoArr[1][i]/algorithm::TRACE_LEN << "," << 100.0*randArr[1][i]/algorithm::TRACE_LEN << "," << 100.0*clockArr[1][i]/algorithm::TRACE_LEN << "\n";
+	}
+	myfile2.close();
+
+	//Looping
+	myfile3.open("looping_data.csv");
+	myfile3 << "#cache, OPT, LRU, FIFO, RAND, CLOCK\n";
+	myfile3 << "0, 0, 0, 0, 0, 0\n";
+	for (int i = 0; i < workloadSize; i++) {
+		myfile3 << 5*(i+1) << "," << 100.0*(optArr[2][i])/algorithm::TRACE_LEN << "," << 100.0*lruArr[2][i]/algorithm::TRACE_LEN << "," << 100.0*fifoArr[2][i]/algorithm::TRACE_LEN << "," << 100.0*randArr[2][i]/algorithm::TRACE_LEN << "," << 100.0*clockArr[2][i]/algorithm::TRACE_LEN << "\n";
+	}
+	myfile3.close();
 }
 
 
