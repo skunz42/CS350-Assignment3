@@ -26,7 +26,8 @@ int algorithm::fifo(int tableSize, int workload) {
 	int workArr[algorithm::TRACE_LEN];
 	int hitCount = 0;
 	int tableIndex = 0;
-	int table[tableSize] = {-1}; //set all values to -1 so we know which spots are empty
+	int table[tableSize]; //set all values to -1 so we know which spots are empty
+	memset(table, -1, tableSize*sizeof(table[0]));
 	bool inTable; //check if value from trace is in the page table
 
 	//workload parameter chooses which array to use. copy contents of the
@@ -61,8 +62,10 @@ int algorithm::random(int tableSize, int workload) {
 	int workArr[algorithm::TRACE_LEN];
 	int hitCount = 0;
 	int tableIndex = 0;
-	int table[tableSize] = {-1}; //set all values to -1 so we know which spots are empty
+	int table[tableSize]; //set all values to -1 so we know which spots are empty
+	memset(table, -1, tableSize*sizeof(table[0]));
 	bool inTable; //check if value from trace is in the page table
+	bool isFull;
 
 	//workload parameter chooses which array to use. copy contents of the
 	//selected array to a working array so we don't repeat code
@@ -76,6 +79,7 @@ int algorithm::random(int tableSize, int workload) {
 	for (int i = 0; i < algorithm::TRACE_LEN; i++) {
 		int pageNum = workArr[i];
 		inTable = false;
+		isFull = true;
 		for (int j = 0; j < tableSize; j++) {
 			if (table[j] == pageNum) { //page number is in table
 				inTable = true;
@@ -84,8 +88,17 @@ int algorithm::random(int tableSize, int workload) {
 			}
 		}
 		if (!inTable) { //evict random page number
-			tableIndex = rand()%tableSize;
-			table[tableIndex] = pageNum;
+			for (int j = 0; j < tableSize; j++) {
+				if (table[j] == -1) {
+					table[j] = pageNum;
+					isFull = false;
+					break;
+				}
+			}
+			if (isFull) {
+				tableIndex = rand()%tableSize;
+				table[tableIndex] = pageNum;
+			}
 		}
 	}
 	return hitCount;
@@ -95,8 +108,10 @@ int algorithm::lru(int tableSize, int workload) {
 	int workArr[algorithm::TRACE_LEN];
 	int hitCount = 0;
 	//int tablieIndex = 0;
-	int table[tableSize] = {-1}; //set all values to -1 so we know which spots are empty
-	int lruTable[tableSize] = {-1}; //table for timestamps of pages in page table
+	int table[tableSize]; //set all values to -1 so we know which spots are empty
+	int lruTable[tableSize]; //table for timestamps of pages in page table
+	memset(table, -1, tableSize*sizeof(table[0]));
+	memset(lruTable, -1, tableSize*sizeof(table[0]));
 	int lru; //value of lru page
 	int lruIndex; //index in pt of lru value
 	bool inTable; //check if value from trace is in the page table
