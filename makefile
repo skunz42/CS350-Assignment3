@@ -13,7 +13,7 @@ generator.o:   generator.cpp
 	g++ -O0 -g -Wall -std=c++11 -c generator.cpp
 
 clean:
-	rm -f *.o pageRep
+	rm -f *.o *.csv *.png pageRep
 
 test:   pageRep
 	./pageRep
