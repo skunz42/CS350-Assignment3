@@ -1,7 +1,5 @@
 # CS350 Assignment 3
 
-Sean Kunz
+Sean Kunz and Brian Grant
 
-AND
-
-Brian Grant
+To make the graphs, type make test
