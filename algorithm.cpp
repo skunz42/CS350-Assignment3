@@ -98,7 +98,7 @@ int algorithm::optimal(int tableSize, int workload){
 	int table[tableSize] = {-1}; 
 	bool inTable;
 	bool placed;
-	int furthestOut[tableSize] = {-1};
+	int furthestOut[tableSize] = {algorithm::TRACE_LEN};
 	int furthestIdx;
 	int tmp;
 
@@ -132,8 +132,8 @@ int algorithm::optimal(int tableSize, int workload){
 			if(!placed){ // if the page has not been placed, the cache is full:
 				int m;			// evict page used furthest in the future
 				for (m = 0; m < tableSize; m++){
-					furthestOut[m] = -1; // if you dont understand this reset to 
-				} 							// -1 just ask and i'll explain
+					furthestOut[m] = algorithm::TRACE_LEN; // if you dont understand this reset to 
+				} 							// traceLen just ask and i'll explain
 				for (m = 0; m < tableSize; m++){
 					for(furthestIdx = (i+1); furthestIdx < algorithm::TRACE_LEN; 
 					furthestIdx++){ // starting at the next idx in the trace
