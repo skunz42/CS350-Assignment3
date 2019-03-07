@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <limits.h>
 #include <fstream>
+#include "string.h"
 
 #include "generator.h"
 
