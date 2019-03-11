@@ -2,4 +2,6 @@
 
 Sean Kunz and Brian Grant
 
+./pageRep to run
+
 To make the graphs, type make test
