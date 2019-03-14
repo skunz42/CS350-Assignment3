@@ -2,6 +2,4 @@
 
 Sean Kunz and Brian Grant
 
-./pageRep to run
-
-To make the graphs, type make test
+Type make to compile, and then type make test, which will make the csv files and the graphs
